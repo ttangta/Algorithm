@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 // 프로그래머스 : 두 개 뽑아서 더하기
+// 풀긴 했지만 반복문 설정을 좀 더 간단하게 구현하는 방법을 생각하지 못했음
 public class ArrayProblem01 {
     public static void main(String[] args){
         System.out.println(Arrays.toString(s3(new int[]{2, 1, 3, 4, 1})));
