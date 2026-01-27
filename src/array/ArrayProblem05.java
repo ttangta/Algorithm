@@ -31,7 +31,7 @@ public class ArrayProblem05 {
             int nx = x + move[0];
             int ny = y + move[1];
             // 유효하지 않는 좌표값을 가진 명령어의 경우 해당 명령어는 무시
-            if(nx < 0 || nx > 5 || ny < 0 || ny > 5)continue;
+            if(nx < -5 || nx > 5 || ny < -5 || ny > 5)continue;
 
             // 순방향 이동 문자열 (x,y) -> (nx,ny)
             String m1 = "(" + x + "," + y + ") -> (" + nx + "," + ny + ")";
