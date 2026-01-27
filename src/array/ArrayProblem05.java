@@ -7,6 +7,7 @@ import java.util.List;
 public class ArrayProblem05 {
     public static void main(String[] args){
         System.out.println(solution("ULURRDLLU"));
+        System.out.println(solution("LULLLLLLU"));
     }
 
 
