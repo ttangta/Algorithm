@@ -9,15 +9,15 @@ public class StackProblem05 {
         System.out.println(solution(new int[][]{{0,0,0,0},{0,0,0,0},{2,0,0,0},{1,1,3,4}}, new int[]{1,3,2,1,4}));
     }
 
-    private static int solution(int[][] board, int[] movies){
+    private static int solution(int[][] board, int[] moves){
         int result = 0;
-        int n= board.length, m=movies.length;
+        int n= board.length, m=moves.length;
         for(int i=0; i<m; i++){
-            movies[i] -= 1;
+            moves[i] -= 1;
         }
         Stack<Integer> stack = new Stack<>();
 
-        M:for(int x : movies){
+        M:for(int x : moves){
             for(int i=0; i<n; i++){
                 // 행을 이동하면서 값 선택
                 int target = board[i][x];
