@@ -1,30 +1,33 @@
-import java.util.Stack;
+import java.util.*;
 class Solution {
     public int solution(int[][] board, int[] moves) {
-        int result = 0;
-        int n = board.length;
-        int m = moves.length;
+        Stack<Integer>[] stacks = new Stack[board[0].length];
         
-        for(int i=0; i<m; i++){
-            moves[i] -= 1;
-        }
+        for(int i=0; i<board[0].length; i++)stacks[i] = new Stack<>();
         
-        Stack<Integer> stack = new Stack<>();
-        
-        M:for(int x : moves){
-            for(int i=0; i<n; i++){
-                int target = board[i][x];
-                if(target !=0){
-                    if(stack.isEmpty() || !stack.peek().equals(target))stack.push(target);
-                    else{
-                        stack.pop();
-                        result += 2;
-                    }
-                    board[i][x] = 0;
-                    continue M;
-                }
+        for(int i=0; i<board[0].length; i++){
+            for(int j=(board.length-1); j>=0; j--){
+                if(board[j][i] == 0)continue;
+                stacks[i].push(board[j][i]);
             }
         }
-        return result;
+        
+        int answer = 0;
+        Stack<Integer> stack = new Stack<>();
+        for(int x : moves){
+            x -= 1;
+            if(stacks[x].isEmpty())continue;
+            else{
+                int target = stacks[x].pop();
+                if(stack.isEmpty() || stack.peek() != target)stack.push(target);
+                else{
+                    stack.pop();
+                    answer += 2;
+                }
+                
+            }
+        }
+        return answer;
+        
     }
 }
