@@ -1,24 +1,23 @@
 import java.util.*;
+
 class Solution {
     public String solution(String[] cards1, String[] cards2, String[] goal) {
-        Queue<String> c1 = new ArrayDeque<>();
-        Queue<String> c2 = new ArrayDeque<>();
+        ArrayDeque<String> queue1 = new ArrayDeque<>();
+        ArrayDeque<String> queue2 = new ArrayDeque<>();
         
-        for(String x : cards1)c1.offer(x);
-        for(String x : cards2)c2.offer(x);
+        for(String s : cards1)queue1.addLast(s);
+        for(String s : cards2)queue2.addLast(s);
         
-        String[] choice = new String[]{c1.poll(), c2.poll()};
+        String s1 = queue1.pollFirst();
+        String s2 = queue2.pollFirst();
         
         for(int i=0; i<goal.length; i++){
-            String target = goal[i];
-            if(target.equals(choice[0])){
-                choice[0] = c1.poll();
-            }
-            else if(target.equals(choice[1])){
-                choice[1] = c2.poll();
-            }
-            else return "No";
+            String s = goal[i];
+            if(s.equals(s1) && !queue1.isEmpty())s1 = queue1.pollFirst();
+            else if(s.equals(s2) && !queue2.isEmpty())s2 = queue2.pollFirst();
+            else if(!s.equals(s1) && !s.equals(s2)) return "No";
         }
+        
         
         return "Yes";
     }
