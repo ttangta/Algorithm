@@ -1,23 +1,21 @@
 import java.util.*;
+
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
-        int[] clear = new int[progresses.length];
+        ArrayDeque<Integer> queue = new ArrayDeque<>();
         for(int i=0; i<progresses.length; i++){
-            clear[i] = (int)Math.ceil((100 - progresses[i])/(double)speeds[i]);
+            int clear = (int)Math.ceil((100 - progresses[i])/(double)speeds[i]);
+            queue.addLast(clear);
         }
         
-        ArrayDeque<Integer> queue = new ArrayDeque<>();
-        for(int i : clear)queue.addLast(i);
-        
         ArrayList<Integer> answer = new ArrayList<>();
-        int max = queue.pollFirst();
         int cnt = 1;
+        int max = queue.pollFirst();
         
         while(!queue.isEmpty()){
             int day = queue.pollFirst();
-            if(max >= day){
-                cnt++;
-            }else{
+            if(max >= day)cnt++;
+            else{
                 answer.add(cnt);
                 max = day;
                 cnt = 1;
