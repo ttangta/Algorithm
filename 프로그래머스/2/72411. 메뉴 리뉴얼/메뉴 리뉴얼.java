@@ -1,13 +1,10 @@
 import java.util.*;
-import java.util.stream.*;
+
 class Solution {
-    
     private static HashMap<Integer, HashMap<String, Integer>> courseMenu;
     public String[] solution(String[] orders, int[] course) {
         courseMenu = new HashMap<>();
-        for(int x : course){
-            courseMenu.put(x, new HashMap<>());
-        }
+        for(int x : course)courseMenu.put(x, new HashMap<>());
         
         for(String s : orders){
             char[] orderArray = s.toCharArray();
@@ -15,14 +12,10 @@ class Solution {
             combinations(0, orderArray, "");
         }
         
-       ArrayList<String> answer = new ArrayList<>(); 
-        
-        for(HashMap<String, Integer> count : courseMenu.values()){
-            count.values().stream().max(Comparator.comparingInt(o -> o))
-                .ifPresent(cnt -> count.entrySet().stream().filter(entry -> cnt.equals(entry.getValue()) && cnt > 1)
-                           .forEach(entry -> answer.add(entry.getKey())));
+        ArrayList<String> answer = new ArrayList<>();
+        for(HashMap<String, Integer> innerMap : courseMenu.values()){
+            innerMap.values().stream().max(Comparator.comparingInt(o -> o)).ifPresent(cnt -> innerMap.entrySet().stream().filter(entry -> cnt.equals(entry.getValue()) && cnt>1).forEach(entry -> answer.add(entry.getKey())));
         }
-        
         Collections.sort(answer);
         return answer.toArray(new String[0]);
     }
@@ -33,7 +26,7 @@ class Solution {
         }
         
         for(int i=idx; i<order.length; i++){
-            combinations(i+1, order, result + order[i]);
+            combinations(i+1, order, result+order[i]);
         }
     }
 }
