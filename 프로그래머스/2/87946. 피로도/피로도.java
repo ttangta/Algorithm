@@ -1,11 +1,11 @@
 class Solution {
-    private static boolean[]visited;
     private static int answer;
     private static int[][] Dungeons;
+    private static boolean[] visited;
     public int solution(int k, int[][] dungeons) {
-        Dungeons = dungeons;
-        visited = new boolean[Dungeons.length];
         answer = 0;
+        Dungeons = dungeons;
+        visited = new boolean[dungeons.length];
         backTrack(k, 0);
         return answer;
     }
