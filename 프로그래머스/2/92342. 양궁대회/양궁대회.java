@@ -1,11 +1,12 @@
 class Solution {
-    private static int[] apeach;
-    private static int[] answer;
     private static int max;
+    private static int[] answer;
+    private static int[] apeach;
     public int[] solution(int n, int[] info) {
         max = 0;
+        answer = new int[11];
         apeach = info;
-        backTrack(n, 0, new int[11]);
+        backTrack(n, new int[11], 0);
         return max == 0 ? new int[]{-1} : answer;
     }
     private static int getScore(int[] ryan){
@@ -15,8 +16,7 @@ class Solution {
         }
         return score;
     }
-    
-    private static void calcuateDiff(int[] ryan){
+    private static void calculateDiff(int[] ryan){
         int score = getScore(ryan);
         if(max < score){
             max = score;
@@ -33,15 +33,15 @@ class Solution {
             }
         }
     }
-    private static void backTrack(int n, int idx, int[] ryan){
-        if(n == 0){
-            calcuateDiff(ryan);
+    private static void backTrack(int arrow, int[] ryan, int idx){
+        if(arrow == 0){
+            calculateDiff(ryan);
             return;
         }
         for(int i=idx; i<=10; i++){
-            int cnt = Math.min(n, apeach[i]+1);
+            int cnt = Math.min(arrow, apeach[i]+1);
             ryan[i] = cnt;
-            backTrack(n-cnt, i+1, ryan);
+            backTrack(arrow - cnt, ryan, i+1);
             ryan[i] = 0;
         }
     }
