@@ -1,27 +1,17 @@
 import java.util.*;
 class Solution {
     private static final int INF = 20001;
-    
-    public int solution(String[] strs, String t) { 
+    public int solution(String[] strs, String t) {
         int n = t.length();
         int[] dp = new int[n+1];
-    
         Arrays.fill(dp, INF);
+        
         dp[0] = 0;
-        
-        HashSet<Integer> sizes = new HashSet<>();
-        for(String s : strs){
-            sizes.add(s.length());
-        }
-        
         for(int i=1; i<=n; i++){
-            for(int size : sizes){
-                if(i - size >= 0){
-                    int idx = i;
-                    String sub = t.substring(idx - size, idx);
-                    if(Arrays.asList(strs).contains(sub)){
-                        dp[i] = Math.min(dp[i], dp[i-size] + 1);
-                    }
+            for(String s : strs){
+                int len = s.length();
+                if(i >= len && dp[i-len] != INF && t.substring(i-len, i).equals(s)){
+                    dp[i] = Math.min(dp[i], dp[i-len]  +1);
                 }
             }
         }
