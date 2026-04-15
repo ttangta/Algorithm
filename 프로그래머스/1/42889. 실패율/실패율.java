@@ -1,30 +1,29 @@
 import java.util.*;
-import java.util.Comparator;
-
 class Solution {
-    public int[] solution(int N, int[] stages) {
-        HashMap<Integer, Double> failRatio = new HashMap<>();
-        
-        int[] challenger = new int[N+2];
-        for(int x : stages)challenger[x]++;
-        
+    public int[] solution(int n, int[] stages) {
+        int[] status = new int[n+2];
+        for(int x : stages ){
+            status[x]++;
+        }
         int total = stages.length;
-        
-        for(int i=1; i<=N; i++){
-            if(challenger[i]==0){
+
+        HashMap<Integer, Double> failRatio = new HashMap<>();
+        for(int i=1; i<=n; i++){
+            int player = status[i];
+            if(player == 0){
                 failRatio.put(i, 0.);
                 continue;
             }
-            failRatio.put(i, (double)challenger[i]/total);
-            total -= challenger[i];
+            failRatio.put(i, (double)player/total);
+            total -= player;
         }
-        
-        int[] answer = failRatio.entrySet().stream().sorted((o1, o2) -> {
-            int tmp = Double.compare(o2.getValue(), o1.getValue());
-            if(tmp != 0)return tmp;
+
+        Comparator<HashMap.Entry<Integer, Double>> comp = (o1, o2) -> {
+            int result = Double.compare(o2.getValue(), o1.getValue());
+            if(result != 0)return result;
             return Integer.compare(o1.getKey(), o2.getKey());
-        }).mapToInt(Map.Entry::getKey).toArray();
-        
-        return answer;
+        };
+
+        return failRatio.entrySet().stream().sorted(comp).mapToInt(HashMap.Entry::getKey).toArray();
     }
 }
