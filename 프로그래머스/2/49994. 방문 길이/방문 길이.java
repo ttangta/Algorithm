@@ -1,35 +1,31 @@
 import java.util.*;
 class Solution {
+    private static boolean isValid(int x, int y){
+        return 0 <= x && x < 11 && 0 <= y && y < 11;
+    }
     private static HashMap<Character, int[]> movement;
     private static void initMovement(){
         movement = new HashMap<>();
-        movement.put('U', new int[]{0,1});
-        movement.put('D', new int[]{0,-1});
-        movement.put('L', new int[]{-1,0});
-        movement.put('R', new int[]{1,0});
+        movement.put(Character.toUpperCase('u'), new int[]{-1, 0});
+        movement.put(Character.toUpperCase('d'), new int[]{1, 0});
+        movement.put(Character.toUpperCase('l'), new int[]{0, -1});
+        movement.put(Character.toUpperCase('r'), new int[]{0, 1});
     }
-    private static boolean possibleMove(int nx, int ny){
-        if(Math.abs(nx) < 6 && Math.abs(ny) < 6)return true;
-        return false;
-    }
+    
     public int solution(String dirs) {
+        int x = 5, y = 5;
         initMovement();
-        HashSet<String> moveHistory = new HashSet<>();
-        int x=0;
-        int y=0;
+        HashSet<String> set = new HashSet<>();
         for(char c : dirs.toCharArray()){
-            int nx = x + movement.get(c)[0];
-            int ny = y + movement.get(c)[1];
-            
-            if(possibleMove(nx, ny)){
-                moveHistory.add(x + ", " + y + " -> " + nx + ", " + ny);
-                moveHistory.add(nx + ", " + ny + " -> " + x + ", " + y);
-                x = nx;
-                y = ny;
-            }else{
-                continue;
-            }
+            int[] mv = movement.get(c);
+            int nx = x + mv[0];
+            int ny = y + mv[1];
+            if(!isValid(nx, ny))continue;
+            set.add(x + " " + y + " " + nx + " " + ny);
+            set.add(nx + " " + ny + " " + x + " " + y);
+            x = nx;
+            y = ny;
         }
-        return moveHistory.size()/2;
+        return set.size()/2;
     }
-} 
+}
