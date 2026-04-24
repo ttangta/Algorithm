@@ -1,19 +1,36 @@
 class Solution {
     public boolean isMatch(String s, String p) {
-        // 패턴을 모두 확인한 이후 s가 남아있으면 매칭 실패, s가 비어있으면 매칭 성공
-        if(p.isEmpty())return s.isEmpty();
+        // s의 길이
+        int m = s.length();
+        // p의 길이
+        int n = p.length();
 
-        // s와 p의 첫 글자가 정확히 일치하거나 p의 값이 '.' 이면 매칭 성공
-        boolean firstMatch = !s.isEmpty() && (s.charAt(0) == p.charAt(0) || p.charAt(0)=='.');
-
-        // p의 문자가 "X*" 형태인 경우
-        if(p.length() >= 2 && p.charAt(1) == '*'){
-            // 두 가지 상황 존재
-            // 1. 해당 패턴이 나타내는 문자 X가 0번 나타나나는 경우 -> p이동, s 그대로 유지
-            // 2. 해당 패턴이 나타내는 문자 X가 1번 나타나는 경우 -> s 이동, p 그대로 유지
-            return isMatch(s, p.substring(2)) || (firstMatch && isMatch(s.substring(1), p)); 
+        // 메모이제이션 : dp[0][0] = s가 빈문자열, p가 빈문지열인 경우 매치 결과 
+        boolean[][] dp = new boolean[m+1][n+1];
+        dp[0][0] = true;
+        for(int j=2; j<=n; j++){
+            if(p.charAt(j-1) == '*')dp[0][j] = dp[0][j-2];
         }
-        // 단순 비교 후 각각 한 칸 씩 이동
-        return firstMatch && isMatch(s.substring(1), p.substring(1));
+
+        // dp 채우기
+        for(int i=1; i<=m; i++){
+            for(int j=1; j<=n; j++){    
+                // 현재 s의 문자
+                char sc = s.charAt(i-1);
+                // 현재 p의 문자
+                char pc = p.charAt(j-1);
+
+                // 만약 p의 문자가 '*' 인경우 두 가지 경우가 존재 1. 해당 패턴 0번 사용(s 그대로, p 두 칸 이동), 2. 해당 패턴 1번 사용 (s 한 칸 이동, p 그대로)
+                if(pc == '*'){
+                    boolean zeroMath = dp[i][j-2];
+                    boolean oneMatch = (sc == p.charAt(j-2) || p.charAt(j-2) =='.') && dp[i-1][j];
+                    dp[i][j] = zeroMath || oneMatch;
+                }
+                else{
+                    dp[i][j] = (sc == pc || pc == '.') && dp[i-1][j-1];
+                }
+            }
+        }
+        return dp[m][n];
     }
 }
