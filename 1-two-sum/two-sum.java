@@ -11,6 +11,7 @@ class Solution {
         for(int i=0; i<nums.length; i++){
             int other = target - nums[i];
             // 만약 other의 값이 map의 키에 존재한다면 현재 nums[i] 번째 인덱스와 map의 other의 값에 해당하는 nums의 인덱스 값의 합으로 target 값 도출 가능
+            // * 자기 자신을 더해서 target에 도달하는 경우를 방지하기 위한 조건 추가
             if(map.containsKey(other) && map.get(other) != i){
                 answer[0] = i;
                 answer[1] = map.get(other);
