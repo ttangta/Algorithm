@@ -16,7 +16,7 @@ class Solution {
             int n = s.charAt(i) - '0';
 
             if((answer > Integer.MAX_VALUE/10 || (answer == Integer.MAX_VALUE/10 && n > 7))
-                || (answer < Integer.MIN_VALUE/10 || (answer == Integer.MIN_VALUE/10 && n < -8))){
+                || (answer < Integer.MIN_VALUE/10 || (answer == Integer.MIN_VALUE/10 && n > 8))){
                 return signe==1?Integer.MAX_VALUE:Integer.MIN_VALUE;
             }
 
