@@ -1,28 +1,31 @@
 class Solution {
     public int myAtoi(String s) {
+        // 문자열 s의 양끝 공백 지우기
+        s = s.trim();
+        if(s.isEmpty())return 0;
         int i = 0;
-        int sign = 1;
-        long answer = 0;
+        int signe = 1;
+        int answer = 0;
 
-        // 1. 공백 문자는 무시 -> 시작지점의 변경
-        while(i < s.length() && s.charAt(i) == ' ')i++;
-
-        // 2. 부호 문자 확인
-        if(i<s.length() && (s.charAt(i)=='-' || s.charAt(i)=='+')){
-            sign = s.charAt(i) == '-'?-1:1;
+        if(s.charAt(i) == '-' || s.charAt(i) == '+'){
+            signe = s.charAt(i) == '-'?-1:1;
             i++;
         }
 
-        // 3. 숫자 문자 하나씩 조립
         while(i<s.length() && Character.isDigit(s.charAt(i))){
-            answer = answer * 10 + (s.charAt(i) - '0');
+            int n = s.charAt(i) - '0';
 
-            if(answer * sign > Integer.MAX_VALUE)return Integer.MAX_VALUE;
-            if(answer * sign < Integer.MIN_VALUE)return Integer.MIN_VALUE;
+            if((answer > Integer.MAX_VALUE/10 || (answer == Integer.MAX_VALUE/10 && n > 7))
+                || (answer < Integer.MIN_VALUE/10 || (answer == Integer.MIN_VALUE/10 && n < -8))){
+                return signe==1?Integer.MAX_VALUE:Integer.MIN_VALUE;
+            }
+
+            answer = answer * 10 + n;
+
             i++;
         }
-        return (int)(answer * sign);
-    
-        
+
+
+        return answer * signe;
     }
 }
