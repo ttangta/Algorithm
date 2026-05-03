@@ -10,36 +10,20 @@
  */
 class Solution {
     public ListNode swapPairs(ListNode head) {
-        
         ListNode dummy = new ListNode();
+        dummy.next = head;
         ListNode current = dummy;
 
-        while(head != null && head.next != null){
-            // 첫 번째 노드
-            ListNode A = head;
-            // 두 번째 노드
-            ListNode B = head.next;
-            ListNode nextPair = B.next;
+        while(current.next != null && current.next.next != null){
+            ListNode first = current.next;
+            ListNode second = current.next.next;
 
-            // swap : B -> A
-            B.next = A;
-            // 임시로 다음 쌍 시작점 연결
-            A.next = nextPair;
+            first.next = second.next;
+            second.next = first;
+            current.next = second;
 
-            // 이전 쌍과 연결 (여기가 빠졌던 부분)
-            current.next = B;
-            // 다음 루프에서 current.next = B가 A -> B 연결을 만듦
-            current = A;
-
-            head = nextPair;
+            current = first;
         }
-
-        // 홀수 개일 때 남은 노드 처리
-        if(head != null){
-            current.next = head;
-        }
-
         return dummy.next;
-    
     }
 }
