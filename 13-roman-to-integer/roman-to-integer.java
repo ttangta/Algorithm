@@ -1,25 +1,36 @@
 class Solution {
+    private static final String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+    private static final int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
     public int romanToInt(String s) {
         int answer = 0;
-        for(int i=0; i<s.length(); i++){
-            int curr = value(s.charAt(i));
-            int next = (i+1 < s.length()) ? value(s.charAt(i+1)) : 0;
+        int idx = 0;
+        for(idx = 0; idx<s.length()-1; idx++){
+            char c1 = s.charAt(idx);
+            char c2 = s.charAt(idx+1);
+            if((c1 == 'C' && (c2 == 'M' || c2 == 'D')) || c1 == 'X' && (c2 == 'C' || c2 == 'L') || c1 == 'I' && (c2 == 'X' || c2 == 'V')){
+                String symbol = String.valueOf(c1).concat(String.valueOf(c2));
+                for(int j=0; j<symbols.length; j++){
+                    if(symbol.equals(symbols[j])){
+                        answer += values[j];
+                        idx++;
+                    }
+                }
+            }
+            else{
+                for(int j=0; j<symbols.length; j++){
+                    if(String.valueOf(c1).equals(symbols[j]))answer+=values[j];
+                }
+            }
+        }
+        if(idx < s.length()){
+            for(int i=idx; i<s.length(); i++){
+                char c = s.charAt(i);
+                for(int j=0; j<symbols.length; j++){
+                    if(String.valueOf(c).equals(symbols[j]))answer+=values[j];
+                }
+            }
+        }
 
-            if(curr < next)answer -= curr;
-            else answer += curr;
-        }
         return answer;
-    }
-    private static int value(char c){
-        switch(c){
-            case 'I' : return 1;
-            case 'V' : return 5;
-            case 'X' : return 10;
-            case 'L' : return 50;
-            case 'C' : return 100;
-            case 'D' : return 500;
-            case 'M' : return 1000;
-            default : return 0;
-        }
     }
 }
