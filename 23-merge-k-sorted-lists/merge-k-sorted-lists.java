@@ -17,20 +17,18 @@ class Solution {
         PriorityQueue<ListNode> queue = new PriorityQueue<>((o1, o2) -> Integer.compare(o1.val, o2.val));
 
         for(int i=0; i<lists.length; i++){
-            ListNode l = lists[i];
-            while(l != null){
-                queue.offer(l);
-                l = l.next;
+            ListNode list = (lists[i] != null)?lists[i] : null;
+            if(list != null)queue.offer(list);
+        }
+        while(!queue.isEmpty()){
+            ListNode list = queue.poll();
+            current.next = list;
+            current = current.next;
+            if(list.next != null){
+                queue.offer(list.next);
             }
         }
-
-        while(!queue.isEmpty()){
-            ListNode l = queue.poll();
-            current.next = l;
-            current = current.next;
-        }
         current.next = null;
-
         return dummy.next;
     }
 }
