@@ -1,34 +1,25 @@
+import java.util.*;
 class Solution {
-    private static final String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
-    private static final int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+    private static Map<Character, Integer> map;
+    private static void mkMap(){
+        map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+    }
     public int romanToInt(String s) {
+        mkMap();
         int answer = 0;
-        int idx = 0;
-        for(idx = 0; idx<s.length()-1; idx++){
-            char c1 = s.charAt(idx);
-            char c2 = s.charAt(idx+1);
-            if((c1 == 'C' && (c2 == 'M' || c2 == 'D')) || c1 == 'X' && (c2 == 'C' || c2 == 'L') || c1 == 'I' && (c2 == 'X' || c2 == 'V')){
-                String symbol = String.valueOf(c1).concat(String.valueOf(c2));
-                for(int j=0; j<symbols.length; j++){
-                    if(symbol.equals(symbols[j])){
-                        answer += values[j];
-                        idx++;
-                    }
-                }
-            }
-            else{
-                for(int j=0; j<symbols.length; j++){
-                    if(String.valueOf(c1).equals(symbols[j]))answer+=values[j];
-                }
-            }
-        }
-        if(idx < s.length()){
-            for(int i=idx; i<s.length(); i++){
-                char c = s.charAt(i);
-                for(int j=0; j<symbols.length; j++){
-                    if(String.valueOf(c).equals(symbols[j]))answer+=values[j];
-                }
-            }
+        
+        for(int i=0; i<s.length(); i++){
+            int cur = map.get(s.charAt(i));
+            int next = (i + 1 < s.length()) ? map.get(s.charAt(i+1)) : 0;
+            if(cur < next)answer -= cur;
+            else answer += cur;
         }
 
         return answer;
