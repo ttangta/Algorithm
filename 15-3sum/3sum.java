@@ -3,36 +3,38 @@ class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> answer = new ArrayList<>();
 
+        // 1. 투 포인터 사용을 위한 nums 배열 정렬 처리
         Arrays.sort(nums);
 
-        for(int p1 = 0; p1 < nums.length-2; p1++){
-            if(p1 > 0 && nums[p1] == nums[p1-1])continue;
-            int p2 = p1 + 1;
-            int p3 = nums.length-1;
-            
-            while(p2 < p3){
-                int sum = nums[p1] + nums[p2] + nums[p3];
-                // 현재 3개의 인덱스에 해당하는 값들의 합이 0이면 정답에 추가
-                if(sum == 0){
-                    answer.add(new ArrayList<>(List.of(nums[p1], nums[p2], nums[p3])));
-
-                    // 중복 결과 건너뛰기 위한 로직
-                    // 현재 넣었던 p2의 인덱스 값과 이후 비교할 p2의 인덱스 값이 같다면 1증가 (다음번 p2번째 값 비교 건너뛰기)
-                    while(p2 < p3 && nums[p2] == nums[p2+1])p2++;
-                    // 현재 넣었던 p3의 인덱스 값이 이후 비교할 p3의 인덱스 값이 같다면 1감소 (다음번 p3번째 값 비교 건너뛰기)
-                    while(p2 < p3 && nums[p3] == nums[p3-1])p3--;
-                    p2++;
-                    p3--;
+        // 2. nums[i] 요소를 고정 시킴 : 이후 최소 left, right 포인터 두개가 필요하니 외부 반복문의 반복 범위 조정
+        for(int i=0; i<nums.length-2; i++){
+            int point = nums[i];
+            // 고정된 요소의 값이 이전의 값과 동일하면 해당 요소에 대한 반복은 건너뜀
+            if(i > 0 && nums[i] == nums[i-1])continue;
+            int left = i+1, right = nums.length-1;
+            while(left < right){
+                // 각 위치의 3요소의 합을 구함
+                int sum = point + nums[left] + nums[right];
+                // 세 요소의 합이 0보다 작으면 left위치를 이동 시켜 3개의 요소의 합의 값 증가 시킴
+                if(sum < 0){
+                    left++;
                 }
-                // 세 개의 인덱스 값의 합이 0 보다 작다면 two pointer 범위에서 큰 값을 추가해야함 -> p2 증가
-                else if(sum < 0)p2++;
-                // 세 개의 인덱스 값의 합이 0 보다 크다면 two pointer 범위에서 작은 값 추가 -> p3 감소
-                else p3--;
+                // 세 요소의 합이 0보다 작으면 right위치를 이동 시켜 3개의 요소의 합의 값 감소 시킴
+                else if(sum > 0){
+                    right--;
+                }
+                // 새 요소의 합이 0과 같으면 -> 해당 요소들을 정답에 추가 시킨 후 모든 포인터 이동
+                else{
+                    answer.add(new ArrayList<>(List.of(point, nums[left], nums[right])));
+                    left++;
+                    right--;
+
+                    // 만약 이동된 각 포인터의 값이 이전과 같다면 이동된 값이 이전과 다를때까지 포인터 이동
+                    while(left < right && nums[left] == nums[left-1])left++;
+                    while(left < right && nums[right] == nums[right+1])right--;
+                }
             }
-
         }
-
-
         return answer;
     }
 }
