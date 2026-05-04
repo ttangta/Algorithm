@@ -21,13 +21,12 @@ class Solution {
             second.next = first;
 
             current.next = second;
-            head = first.next;
             current = first;
+            head = first.next;
         }
 
-        if(head!=null){
-            current.next = head;
-        }
+        if(head != null)current.next = head;
+
         return dummy.next;
     }
 }
