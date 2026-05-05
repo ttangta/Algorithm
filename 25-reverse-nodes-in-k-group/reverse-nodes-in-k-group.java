@@ -13,12 +13,11 @@ class Solution {
         ListNode dummy = new ListNode();
         dummy.next = head;
         ListNode prevGroupEnd = dummy;
-
         while(true){
             ListNode check = prevGroupEnd;
             for(int i=0; i<k; i++){
                 check = check.next;
-                if(check == null)return dummy.next;
+                if(check == null)return dummy.next;  
             }
             ListNode prev = null;
             ListNode cur = prevGroupEnd.next;
