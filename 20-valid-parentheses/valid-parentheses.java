@@ -2,19 +2,30 @@ import java.util.*;
 class Solution {
     public boolean isValid(String s) {
         Stack<Character> stack = new Stack<>();
-        int cnt = s.length();
-        for(int i=0; i<cnt; i++){
-            char c1 = s.charAt(i);
-            if(c1 == '(' || c1 == '{' || c1 == '[')stack.push(c1);
+        for(int i=0; i<s.length(); i++){
+            char c = s.charAt(i);
+            
+            // 스택이 비어있는 상황에서 닫는 괄호인경우 그 즉시, false 리턴
+            if(stack.isEmpty() && (c==')' || c == '}' || c == ']'))return false;
+
+            // 여는 괄호인 경우
+            if(c == '(' || c == '{' || c == '[')stack.push(c);
+            // 닫는 괄호인 경우
             else{
-                if(stack.isEmpty())return false;
-                char c2 = stack.pop();
-                if(c2 == '(' && (c1 == '}' || c1 == ']'))return false;
-                else if(c2 == '{' && (c1 == ')' || c1 == ']'))return false;
-                else if(c2 == '[' && (c1 == ')' || c1 == '}'))return false;
+                char com = stack.pop();
+                switch (com){
+                    case '(':
+                        if(c == '}' || c == ']')return false;
+                        break;
+                    case '{':
+                        if(c == ')' || c == ']')return false;
+                        break;
+                    case '[':
+                        if(c == ')' || c == '}')return false;
+                        break;
+                }
             }
         }
-
         return stack.isEmpty();
     }
 }
