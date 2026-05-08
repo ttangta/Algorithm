@@ -24,7 +24,8 @@ class Solution {
             }
             current = current.next;
         }
-        current.next = (list1 != null) ? list1 : list2;
+        if(list1 != null)current.next = list1;
+        else current.next = list2;
         return dummy.next;
     }
 }
