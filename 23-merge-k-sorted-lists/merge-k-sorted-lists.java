@@ -8,23 +8,37 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
- import java.util.*;
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        if(lists == null)return null;
+        if(lists == null || lists.length == 0)return null;
+        return mergeRange(lists, 0, lists.length-1);
+    }
+    private static ListNode mergeRange(ListNode[] lists, int left, int right){
+        if(left == right)return lists[left];
+        
+        int mid = left + (right-left)/2;
+        ListNode l1 = mergeRange(lists, left, mid);
+        ListNode l2 = mergeRange(lists, mid+1, right);
+        return mergeTwoLists(l1, l2);
+    }
+    private static ListNode mergeTwoLists(ListNode l1, ListNode l2){
         ListNode dummy = new ListNode();
         ListNode current = dummy;
 
-        PriorityQueue<ListNode> queue = new PriorityQueue<>((o1, o2) -> Integer.compare(o1.val, o2.val));
-        for(ListNode list : lists){
-            if(list != null)queue.offer(list);
-        }
-        while(!queue.isEmpty()){
-            ListNode list = queue.poll();
-            current.next = list;
+        while(l1 != null && l2 != null){
+            if(l1.val <= l2.val){
+                current.next = l1;
+                l1 = l1.next;
+            }
+            else{
+                current.next = l2;
+                l2 = l2.next;
+            }
             current = current.next;
-            if(list.next != null)queue.offer(list.next);
         }
+
+        if(l1 != null)current.next = l1;
+        if(l2 != null)current.next = l2;
         return dummy.next;
     }
 }
