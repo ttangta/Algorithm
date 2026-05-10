@@ -12,25 +12,29 @@ class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
         ListNode dummy = new ListNode();
         dummy.next = head;
-        ListNode prevGroupEnd = dummy;
+        ListNode prevGroup = dummy;
         while(true){
-            ListNode check = prevGroupEnd;
+            ListNode kth = prevGroup;
             for(int i=0; i<k; i++){
-                check = check.next;
-                if(check == null)return dummy.next;  
+                kth = kth.next;
+                if(kth == null)return dummy.next;
             }
+
+            // 다음 그룹의 시작 노드
+            ListNode groupNext = kth.next;
             ListNode prev = null;
-            ListNode cur = prevGroupEnd.next;
-            ListNode groupStart = cur;
+            ListNode current = prevGroup.next;
+            ListNode startGroup = current;
+            
             for(int i=0; i<k; i++){
-                ListNode next = cur.next;
-                cur.next = prev;
-                prev = cur;
-                cur = next;
+                ListNode next = current.next;
+                current.next = prev;
+                prev = current;
+                current = next;
             }
-            prevGroupEnd.next = prev;
-            groupStart.next = cur;
-            prevGroupEnd = groupStart;
+            prevGroup.next = prev;
+            startGroup.next = current;
+            prevGroup = startGroup;
         }
     }
 }
