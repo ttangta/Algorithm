@@ -1,0 +1,155 @@
+import java.util.Scanner;
+import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+class Solution{
+ 	public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int T = Integer.parseInt(br.readLine());
+        StringTokenizer st;
+        for(int t=1; t<=T; t++){
+            int max = Integer.MIN_VALUE;
+            st = new StringTokenizer(br.readLine());
+            int n = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
+
+            int remit = m-1;
+
+            int[][] board = new int[n][n];
+            for(int i=0; i<n; i++){
+                st = new StringTokenizer(br.readLine());
+                for(int j=0; j<n; j++){
+                    board[i][j] = Integer.parseInt(st.nextToken());
+                }
+            }
+
+            // 1. + 노즐
+            int sum;
+            for(int r=0; r<n; r++){
+                for(int c=0; c<n; c++){
+                    sum = board[r][c];
+
+                    // 상
+                    int nr = r-remit;
+                    if(nr<0){
+                        for(int nR=0; nR<r; nR++){
+                            sum += board[nR][c];
+                        }
+                    }else{
+                        for(int nR=nr; nR<r; nR++){
+                            sum += board[nR][c];
+                        }
+                    }
+
+                    // 하
+                    nr = r+remit;
+                    if(nr>=n){
+                        for(int nR=r+1; nR<n; nR++){
+                            sum += board[nR][c];
+                        }
+                    }else{
+                        for(int nR=r+1; nR<=nr; nR++){
+                            sum += board[nR][c];
+                        }
+                    }
+
+                    // 좌
+                    int nc = c-remit;
+                    if(nc<0){
+                        for(int nC=0; nC<c; nC++){
+                            sum += board[r][nC];
+                        }
+                    }else{
+                        for(int nC=nc; nC<c; nC++){
+                            sum += board[r][nC];
+                        }
+                    }
+
+                    // 우
+                    nc = c+remit;
+                    if(nc>=n){
+                        for(int nC=c+1; nC<n; nC++){
+                            sum += board[r][nC];
+                        }
+                    }else{
+                        for(int nC=c+1; nC<=nc; nC++){
+                            sum += board[r][nC];
+                        }
+                    }
+                    max = Math.max(max, sum);
+                }
+            }
+
+
+            // 2. x 노즐
+            sum = 0;
+            for(int r=0; r<n; r++){
+                for(int c=0; c<n; c++){
+                    sum = board[r][c];
+
+
+                    int nr = r-remit;
+                    int nc = c-1;
+                    if(nr<0){
+                        for(int nR=r-1; nR>=0; nR--){
+                            if(nc<0)break;
+                            sum += board[nR][nc--];
+                        }
+                    }else{
+                        for(int nR=r-1; nR>=nr; nR--){
+                            if(nc<0)break;
+                            sum += board[nR][nc--];
+                        }
+                    }
+
+                    nr = r+remit;
+                    nc = c+1;
+                    if(nr>=n){
+                        for(int nR=r+1; nR<n; nR++){
+                            if(nc>=n)break;
+                            sum += board[nR][nc++];
+                        }
+                    }else{
+                        for(int nR=r+1; nR<=nr; nR++){
+                            if(nc>=n)break;
+                            sum += board[nR][nc++];
+                        }
+                    }
+
+                    nr = r-remit;
+                    nc = c+1;
+                    if(nr<0){
+                        for(int nR=r-1; nR>=0; nR--){
+                            if(nc>=n)break;
+                            sum += board[nR][nc++];
+                        }
+                    }else{
+                        for(int nR=r-1; nR>=nr; nR--){
+                            if(nc>=n)break;
+                            sum += board[nR][nc++];
+                        }
+                    }
+
+                    nr = r+remit;
+                    nc = c-1;
+                    if(nr>=n){
+                        for(int nR=r+1; nR<n; nR++){
+                            if(nc<0)break;
+                            sum+= board[nR][nc--];
+                        }
+                    }else{
+                        for(int nR=r+1; nR<=nr; nR++){
+                            if(nc<0)break;
+                            sum+= board[nR][nc--];
+                        }
+                    }
+                    max = Math.max(max, sum);
+                }
+            }
+
+            System.out.println("#"+t + " " + max);
+        }
+    }
+}
